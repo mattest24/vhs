@@ -254,6 +254,7 @@ app.put("/orders/:id", (req, res) => {
   });
 });
 
+// Obsługa zapytania GET do wyświetlenia szczegółów zamówienia
 app.get("/orders/:id", (req, res) => {
   const orderId = req.params.id;
 
@@ -275,6 +276,7 @@ app.get("/orders/:id", (req, res) => {
   });
 });
 
+// Obsługa zapytania GET do wyświetlenia szczegółów zamówienia
 app.get("/moviedata/:id", (req, res) => {
   const movie_id = req.params.id;
 
@@ -291,42 +293,33 @@ app.get("/moviedata/:id", (req, res) => {
   });
 });
 
-// Obsługa żądania POST na endpoint '/save-address'
-app.put("/save-address/:userId", (req, res) => {
-  try {
-    const userId = req.params.userId; // Pobierz identyfikator użytkownika z adresu URL
-    const { name, address, city, zipCode } = req.body;
+// Obsługa zapytania PUT do aktualizacji user_data
+app.put('/save-address/:userId', (req, res) => {
+  const userId = req.params.userId;
+  const { name, address, city, zip_code } = req.body;
 
-    // Sanitize and validate user input
-    const sanitizedData = {
-      name: validator.string().trim().escape(name),
-      address: validator.string().trim().escape(address),
-      city: validator.string().trim().escape(city),
-      zipCode: validator.string().trim().escape(zipCode)
-    };
+  const query = `UPDATE users SET name=?, address=?, city=?, zip_code=? WHERE user_id=?`;
 
-    const query = {
-      text: "UPDATE users SET name = ?, address = ?, city = ?, zip_code = ? WHERE user_id = ?",
-      values: [sanitizedData.name, sanitizedData.address, sanitizedData.city, sanitizedData.zipCode, userId]
-    };
-
-    connection.query(query, (err, result) => {
-      if (err) {
-        console.error("Error saving address data", err);
-        return res.status(500).json({ error: "Internal server error" });
-      }
-
-      if (result.affectedRows === 0) {
-        return res.status(404).json({ error: "User not found" });
-      }
-
-      return res.status(200).json({ message: "Address data saved successfully" });
-    });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "Internal server error" });
-  }
+  connection.query(query, [name, address, city, zip_code, userId], (err, result) => {
+    if (err) throw err;
+    console.log(`User ${userId} updated successfully!`);
+    res.send(`User ${userId} updated successfully!`);
+  });
 });
+
+app.get('/userdata/:userId', (req, res) => {
+  const userId = req.params.userId;
+
+  const query = `SELECT name, address, city, zip_code FROM users WHERE user_id=?`;
+
+  connection.query(query, [userId], (err, result) => {
+    if (err) throw err;
+    console.log(`User ${userId} retrieved successfully!`);
+    res.send(result);
+  });
+});
+
+
 const PORT = 3000;
 
 app.listen(PORT, () => {

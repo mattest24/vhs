@@ -1,3 +1,21 @@
+// Function to update user details on the page
+function updateUserDetails(userData) {
+  const userNameElement = document.getElementById('userName');
+  const userAddressElement = document.getElementById('userAddress');
+  const userCityElement = document.getElementById('userCity');
+  
+  console.log(userData); // Dodaj ten console.log
+  
+  if (userData.length > 0) {
+    const user = userData[0];
+    userNameElement.textContent = user.name;
+    userAddressElement.textContent = user.address;
+    userCityElement.textContent = user.city;
+  } else {
+    console.log("No user data available.");
+  }
+}
+
 // Function to check if the user is logged in
 const isLoggedIn = () => {
   return localStorage.getItem("isLoggedIn") === "true";
@@ -8,40 +26,70 @@ const getUserId = () => {
   return localStorage.getItem("userId");
 };
 
-// Function to handle form submission (address data)
-const handleAddressFormSubmit = async (event) => {
+// Function to get user data
+async function getUserData(userId) {
+  const response = await fetch(`http://localhost:3000/userdata/${userId}`);
+  const userData = await response.json();
+  return userData;
+}
+
+// Usage of the functions within an async function
+async function displayUserData() {
+  if (isLoggedIn()) {
+    const userId = getUserId();
+    const userData = await getUserData(userId);
+    updateUserDetails(userData);
+  } else {
+    console.log("User is not logged in.");
+  }
+}
+
+// Call the async function to display user data
+displayUserData();
+
+// Funkcja do obsługi wysyłania formularza (dane adresowe)
+async function handleAddressFormSubmit(event) {
   event.preventDefault();
 
   const name = document.getElementById("name").value;
   const address = document.getElementById("address").value;
   const city = document.getElementById("city").value;
-  const zipCode = document.getElementById("zipCode").value;
+  const zip_code = document.getElementById("zipCode").value;
 
   try {
-    const response = await fetch("http://localhost:3000/save-address", {
-      method: "POST",
+    const response = await fetch(`http://localhost:3000/save-address/${getUserId()}`,{
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name, address, city, zipCode }),
+      body: JSON.stringify({ name, address, city, zip_code }),
     });
 
     if (response.ok) {
-      // Address data saved successfully
+      // Dane adresowe zapisane pomyślnie
       const loginStatus = document.getElementById("login-status");
-      loginStatus.textContent = "Address data saved successfully";
+      loginStatus.textContent = "Dane adresowe zapisane pomyślnie";
     } else {
-      // Failed to save address data
+      // Nie udało się zapisać danych adresowych
       const loginStatus = document.getElementById("login-status");
-      loginStatus.textContent = "Failed to save address data";
+      loginStatus.textContent = "Nie udało się zapisać danych adresowych";
     }
   } catch (error) {
     console.error(error);
     const loginStatus = document.getElementById("login-status");
     loginStatus.textContent =
-      "An error occurred while saving address data. Please try again later.";
+      "Wystąpił błąd podczas zapisywania danych adresowych. Spróbuj ponownie później.";
   }
-};
+}
+
+// Pobranie referencji do formularza
+const addressForm = document.getElementById('address-form');
+
+// Dodanie nasłuchiwacza na zdarzenie "submit"
+addressForm.addEventListener('submit', handleAddressFormSubmit);
+
+
+
 
 // Funkcja do obsługi wylogowania
 const handleLogout = () => {
