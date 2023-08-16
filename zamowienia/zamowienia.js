@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const userId = localStorage.getItem('userId');
 
   // Utwórz adres URL z userId
-  const url = `http://localhost:3000/user_orders/${userId}`;
+  const url = `https://vhs2023-d7mb.onrender.com/user_orders/${userId}`;
 
   try {
     // Pobranie danych o zamówieniach z backendu
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Pobierz dane o filmach z serwera
   async function fetchMovies(data) {
     const uniqueMovieIds = [...new Set(data.map(order => order.movie_id))];
-    const url_movies = `http://localhost:3000/movies`;
+    const url_movies = `https://vhs2023-d7mb.onrender.com/movies`;
 
     const response = await fetch(url_movies);
     const allMovieData = await response.json();
@@ -94,13 +94,13 @@ returnButtons.forEach(button => {
 
     try {
       // Pobierz informacje o zamówieniu
-      const orderInfoEndpoint = `http://localhost:3000/orders/${orderId}`;
+      const orderInfoEndpoint = `https://vhs2023-d7mb.onrender.com/orders/${orderId}`;
       const orderInfoResponse = await fetch(orderInfoEndpoint);
       const orderInfo = await orderInfoResponse.json();
 
       // Pobierz informacje o filmie
       const movieId = orderInfo.movie_id;
-      const movieInfoEndpoint = `http://localhost:3000/movies/${movieId}`;
+      const movieInfoEndpoint = `https://vhs2023-d7mb.onrender.com/movies/${movieId}`;
       const movieInfoResponse = await fetch(movieInfoEndpoint);
       const movieInfo = await movieInfoResponse.json();
 
@@ -125,7 +125,7 @@ returnButtons.forEach(button => {
       if (confirmReturn) {
         alert(`Czekamy na zwrot filmu. Pozdrawiamy serdecznie.`);
 
-        const endpoint = `http://localhost:3000/orders/${orderId}`;
+        const endpoint = `https://vhs2023-d7mb.onrender.com/orders/${orderId}`;
         const response = await fetch(endpoint, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
@@ -137,7 +137,7 @@ returnButtons.forEach(button => {
 
           // Zmniejsz ilość dostępnych kopii filmu w bazie danych
         const quantityUpdate = +1;
-        const updateResponse = await fetch(`http://localhost:3000/updateMovieQuantity/${movieId}`, {
+        const updateResponse = await fetch(`https://vhs2023-d7mb.onrender.com/updateMovieQuantity/${movieId}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
