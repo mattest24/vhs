@@ -133,7 +133,7 @@ async function rentMovies() {
         total_price: movie.total_price,
       };
 
-      const orderResponse = await fetch("http://localhost:3000/orders", {
+      const orderResponse = await fetch("https://vhs2023-d7mb.onrender.com/orders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -146,7 +146,7 @@ async function rentMovies() {
 
       const quantityUpdate = -1;
 
-      const updateResponse = await fetch(`http://localhost:3000/updateMovieQuantity/${movie.movie_id}`, {
+      const updateResponse = await fetch(`https://vhs2023-d7mb.onrender.com/updateMovieQuantity/${movie.movie_id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

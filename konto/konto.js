@@ -28,7 +28,7 @@ const getUserId = () => {
 
 // Function to get user data
 async function getUserData(userId) {
-  const response = await fetch(`http://localhost:3000/userdata/${userId}`);
+  const response = await fetch(`https://vhs2023-d7mb.onrender.com/userdata/${userId}`);
   const userData = await response.json();
   return userData;
 }
@@ -57,7 +57,7 @@ async function handleAddressFormSubmit(event) {
   const zip_code = document.getElementById("zipCode").value;
 
   try {
-    const response = await fetch(`http://localhost:3000/save-address/${getUserId()}`,{
+    const response = await fetch(`https://vhs2023-d7mb.onrender.com/save-address/${getUserId()}`,{
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

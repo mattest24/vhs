@@ -6,7 +6,7 @@ const getProductData = async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const productId = parseInt(urlParams.get("id"));
 
-    const response = await fetch(`http://localhost:3000/moviedata/${productId}`);
+    const response = await fetch(`https://vhs2023-d7mb.onrender.com/moviedata/${productId}`);
     const movies = await response.json();
 
     const firstMovie = movies[0];
@@ -79,7 +79,7 @@ const getMoviedata = async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const productId = parseInt(urlParams.get("id"));
 
-    const response = await fetch(`http://localhost:3000/movies/${productId}`);
+    const response = await fetch(`https://vhs2023-d7mb.onrender.com/movies/${productId}`);
     const movies = await response.json();
 
     const firstMovie = movies[0];

@@ -50,7 +50,7 @@ loginForm.addEventListener('submit', async (event) => {
 
   try {
     // Send login credentials to the backend for verification
-    const response = await fetch('http://localhost:3000/login', {
+    const response = await fetch('https://vhs2023-d7mb.onrender.com/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

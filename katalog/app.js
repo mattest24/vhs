@@ -1,7 +1,7 @@
 // Pobierz dane z serwera
 
 document.addEventListener('DOMContentLoaded', () => {
-  fetch('http://localhost:3000/movies')
+  fetch('https://vhs2023-d7mb.onrender.com/movies')
     .then(response => response.json())
     .then(data => {
       displayMovies(data); // Zmieniamy nazwę funkcji na displayMovies
